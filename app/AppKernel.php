@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Ekreative\RedmineLoginBundle\EkreativeRedmineLoginBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle()
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -27,6 +28,7 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new h4cc\AliceFixturesBundle\h4ccAliceFixturesBundle();
         }
 
         return $bundles;

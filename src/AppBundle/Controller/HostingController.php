@@ -21,15 +21,19 @@ class HostingController extends Controller
     /**
      * Lists all Hosting entities.
      *
+     * @param $request Request
+     * @return string
+     *
      * @Route("/", name="hosting")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppBundle:Hosting')->findAll();
+        $query = $em->getRepository('AppBundle:Hosting')->createQueryBuilder('h')->getQuery();
+        $entities = $this->get('knp_paginator')->paginate($query, $request->query->getInt('page', 1), 100);
 
         return [
             'entities' => $entities,
@@ -188,7 +192,7 @@ class HostingController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('hosting_edit', ['id' => $id]));
+            return $this->redirect($this->generateUrl('hosting_show', ['id' => $id]));
         }
 
         return [

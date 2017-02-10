@@ -5,31 +5,36 @@ namespace AppBundle\AuthorEditor;
 use AppBundle\Entity\User;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class AuthorEditorListener
 {
+    /**
+     * @var TokenStorage
+     */
+    private $tokenStorage;
 
-    protected $container;
-
-    public function __construct(ContainerInterface $container = null)
+    public function __construct(TokenStorage $tokenStorage = null)
     {
-        $this->container = $container;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
-     * @return User
+     * @return User|null
      */
     private function getUser()
     {
-        return $this->container->get('security.token_storage')->getToken()->getUser();
+        if (($token  = $this->tokenStorage->getToken())) {
+            return $token->getUser();
+        }
+        return null;
     }
 
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof AuthorEditorable) {
-//            $user = $this->getUser();
-//            $entity->setEditor($user);
+        if ($entity instanceof AuthorEditorable && ($user = $this->getUser())) {
+            $entity->setEditor($user);
         }
     }
 
@@ -39,12 +44,9 @@ class AuthorEditorListener
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-//        $userState = $this->container->get('doctrine')->getEntityManager()->getUnitOfWork()->getEntityState($this->getUser());
-        if ($entity instanceof AuthorEditorable) {
-//            var_dump(get_class($entity), $entity->getId(), $userState);
-//            $user = $this->getUser();
-//            $entity->setAuthor($user);
-//            $entity->setEditor($user);
+        if ($entity instanceof AuthorEditorable && ($user = $this->getUser())) {
+            $entity->setAuthor($user);
+            $entity->setEditor($user);
         }
     }
 }

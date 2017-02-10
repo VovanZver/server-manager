@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20150911143547 extends AbstractMigration
+class Version20160121124028 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,16 +18,7 @@ class Version20150911143547 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE site ADD COLUMN author INT(11) DEFAULT NULL');
-        $this->addSql('CREATE TABLE user (
-                      id INT NOT NULL,
-                      username VARCHAR(255) DEFAULT NULL,
-                      firstName VARCHAR(255) DEFAULT NULL,
-                      lastName VARCHAR(255) DEFAULT NULL,
-                      email VARCHAR(255) DEFAULT NULL,
-                      isAdmin TINYINT(1),
-                      PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-
+        $this->addSql('ALTER TABLE user CHANGE is_admin admin TINYINT(1) NOT NULL');
     }
 
     /**
@@ -38,8 +29,6 @@ class Version20150911143547 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE site DROP author');
-        $this->addSql('DROP TABLE user');
-
+        $this->addSql('ALTER TABLE user CHANGE admin is_admin TINYINT(1) NOT NULL');
     }
 }

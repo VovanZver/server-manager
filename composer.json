@@ -1,15 +1,23 @@
 {
-    "name": "mcfedr/server-manager",
+    "name": "ekreative/server-manager",
     "license": "MIT",
     "type": "project",
+    "description": "An app for storing data about servers",
     "autoload": {
         "psr-4": {
-            "": "src/",
+            "AppBundle\\": "src/AppBundle/",
             "SymfonyStandard\\": "app/SymfonyStandard/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AppBundle\\Tests\\": "tests/AppBundle/Tests/"
         }
     },
     "require": {
         "php": ">=5.5",
+        "ext-apc": "*",
+        "ext-redis": "*",
         "symfony/symfony": "^2.7",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
@@ -19,10 +27,12 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-migrations-bundle": "^1.1",
-        "ekreative/redmine_login": "^2.1",
+        "ekreative/redmine_login": "^3.5.0",
         "nelmio/api-doc-bundle": "^2.9",
         "jrschumacher/symfony-redis-session-handler": "^1.0",
-        "stof/doctrine-extensions-bundle": "^1.2"
+        "stof/doctrine-extensions-bundle": "^1.2",
+        "h4cc/alice-fixtures-bundle": "^0.5.1",
+        "knplabs/knp-paginator-bundle": "^2.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

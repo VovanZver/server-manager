@@ -15,17 +15,23 @@ security:
 
         secured_area:
             pattern: ^/
-            anonymous:
+            anonymous: true
             simple_form:
                 authenticator: ekreative_redmine_login.authenticator
                 check_path:    login_check
                 login_path:    login
                 username_parameter: login[username]
                 password_parameter: login[password]
+                remember_me:    true
             simple_preauth:
                 authenticator: ekreative_redmine_login.api_authenticator
             logout:
                 path: /logout
+            remember_me:
+                key: "%secret%"
+                path: /
+                lifetime: 604800
+                always_remember_me: true
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

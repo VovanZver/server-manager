@@ -21,15 +21,19 @@ class FrameworkController extends Controller
     /**
      * Lists all Framework entities.
      *
+     * @param $request Request
+     * @return string
+     *
      * @Route("/", name="framework")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppBundle:Framework')->findAll();
+        $query = $em->getRepository('AppBundle:Framework')->createQueryBuilder('h')->getQuery();
+        $entities = $this->get('knp_paginator')->paginate($query, $request->query->getInt('page', 1), 100);
 
         return [
             'entities' => $entities,
@@ -188,7 +192,7 @@ class FrameworkController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('framework_edit', ['id' => $id]));
+            return $this->redirect($this->generateUrl('framework_show', ['id' => $id]));
         }
 
         return [
